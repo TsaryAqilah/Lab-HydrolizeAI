@@ -1,0 +1,9 @@
+
+{
+  "name": "Lab Virtual Hidrolisis Garam",
+  "description": "Sebuah aplikasi laboratorium virtual interaktif untuk mempelajari konsep hidrolisis garam dalam kimia, lengkap dengan pengujian pH dan asisten AI.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
