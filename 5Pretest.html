@@ -71,83 +71,6 @@ main{
 
 h2{color:var(--accent);margin-bottom:1rem}
 
-/* ===== SETUP BANNER ===== */
-.setup-banner{
-  background:linear-gradient(135deg,#fef3c7,#fde68a);
-  border:2px solid #f59e0b;
-  border-radius:15px;
-  padding:1.2rem 1.5rem;
-  margin-bottom:1.5rem;
-}
-.setup-banner summary{
-  cursor:pointer;
-  font-weight:600;
-  color:#92400e;
-  font-size:0.95rem;
-}
-.setup-banner ol{
-  margin-top:0.8rem;
-  padding-left:1.2rem;
-  color:#78350f;
-  font-size:0.88rem;
-  line-height:2;
-}
-.setup-banner code{
-  background:#fff;
-  border:1px solid #d97706;
-  border-radius:6px;
-  padding:2px 6px;
-  font-size:0.85rem;
-  font-family:monospace;
-}
-.setup-input{
-  display:flex;
-  gap:0.5rem;
-  margin-top:0.8rem;
-  flex-wrap:wrap;
-}
-.setup-input input{
-  flex:1;
-  min-width:200px;
-  padding:0.5rem 0.8rem;
-  border-radius:10px;
-  border:2px solid #d97706;
-  font-size:0.9rem;
-  margin-bottom:0;
-}
-.setup-input button{
-  background:#f59e0b;
-  color:white;
-  border:none;
-  padding:0.5rem 1.2rem;
-  border-radius:10px;
-  cursor:pointer;
-  font-weight:600;
-}
-.setup-input button:hover{background:#d97706}
-.connected-badge{
-  display:inline-block;
-  background:#dcfce7;
-  color:#166534;
-  border:2px solid #22c55e;
-  border-radius:20px;
-  padding:0.3rem 1rem;
-  font-size:0.85rem;
-  font-weight:600;
-  margin-top:0.5rem;
-}
-.offline-badge{
-  display:inline-block;
-  background:#fef3c7;
-  color:#92400e;
-  border:2px solid #f59e0b;
-  border-radius:20px;
-  padding:0.3rem 1rem;
-  font-size:0.85rem;
-  font-weight:600;
-  margin-top:0.5rem;
-}
-
 /* ===== LOGIN FORM ===== */
 input{
   width:100%;
@@ -337,14 +260,6 @@ tr:hover{
   background:#f0f9ff;
 }
 
-/* ===== LOADING ===== */
-.loading-row td{
-  color:var(--text-secondary);
-  font-style:italic;
-  animation:pulse 1.5s infinite;
-}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
-
 /* ===== FOOTER ===== */
 footer{
   background:white;
@@ -401,24 +316,6 @@ footer{
 
 <main>
 
-<!-- SETUP BANNER -->
-<details class="setup-banner" id="setupBanner">
-  <summary>⚙️ Pengaturan Cloud Sync (Klik untuk melihat) — Skor tersinkron antar perangkat</summary>
-  <ol>
-    <li>Buka <a href="https://firebase.google.com" target="_blank"><strong>firebase.google.com</strong></a> → Masuk dengan akun Google</li>
-    <li>Klik <strong>Get started</strong> → <strong>Create a project</strong> → beri nama bebas (misal: <code>hidrolisis-garam</code>)</li>
-    <li>Di dashboard, klik <strong>Realtime Database</strong> → <strong>Create Database</strong> → pilih lokasi → pilih <strong>Start in test mode</strong></li>
-    <li>Copy URL database Anda (format: <code>https://nama-project-default-rtdb.firebaseio.com</code>)</li>
-    <li>Tempel URL di bawah lalu klik Simpan:</li>
-  </ol>
-  <div class="setup-input">
-    <input type="text" id="firebaseUrlInput" placeholder="https://nama-project-default-rtdb.firebaseio.com">
-    <button onclick="saveFirebaseUrl()">💾 Simpan</button>
-  </div>
-  <div id="connectionStatus"></div>
-  <p style="margin-top:0.8rem;font-size:0.8rem;color:#92400e">⚠️ Jika belum diatur, skor hanya tersimpan di perangkat ini (offline mode).</p>
-</details>
-
 <!-- LOGIN BOX -->
 <div id="loginBox">
   <h2>🔐 Identitas Peserta</h2>
@@ -465,13 +362,8 @@ footer{
 <!-- SCOREBOARD -->
 <hr style="margin:3rem 0 2rem;border:none;border-top:2px solid #e2e8f0">
 
-<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;margin-bottom:0.5rem">
-  <div>
-    <h2 style="margin-bottom:0.2rem">📊 Papan Skor — Pretest</h2>
-    <p style="color:var(--text-secondary);font-size:0.9rem">Daftar peserta yang telah mengerjakan pretest</p>
-  </div>
-  <span id="syncIndicator" class="offline-badge">💾 Mode Offline</span>
-</div>
+<h2>📊 Papan Skor</h2>
+<p style="color:var(--text-secondary);margin-bottom:1rem">Daftar peserta yang telah mengerjakan pretest</p>
 
 <table>
 <thead>
@@ -484,193 +376,67 @@ footer{
   <th>Waktu</th>
 </tr>
 </thead>
-<tbody id="scoreTable"><tr class="loading-row"><td colspan="6">Memuat data...</td></tr></tbody>
+<tbody id="scoreTable"></tbody>
 </table>
 
-<div style="display:flex;gap:1rem;margin-top:1.5rem;flex-wrap:wrap">
-  <button class="primary" onclick="loadScoreboard()">🔄 Refresh Skor</button>
-  <button class="primary" style="background:#ef4444" onclick="resetScore()">🔑 Reset Papan Skor (Guru)</button>
-</div>
+<button class="primary" style="margin-top:1.5rem" onclick="resetScore()">🔑 Reset Papan Skor (Guru)</button>
 
 </main>
 
 <footer>&copy; 2026 Tsary ▏ Sumari ▏ Departemen Kimia ▏ Universitas Negeri Malang</footer>
 
-<script>
-// =============================================
-// KONFIGURASI FIREBASE
-// =============================================
-// Ganti dengan URL Firebase Realtime Database Anda
-// Contoh: https://nama-project-default-rtdb.firebaseio.com
-// Instruksi setup ada di banner kuning di atas
-// =============================================
+<!-- ✅ FIREBASE + QUIZ SCRIPT (GABUNG) -->
+<script type="module">
+/* =========================
+   1) FIREBASE REALTIME DB
+========================= */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
+import { getDatabase, ref, push, onValue, set } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-database.js";
 
-const STORAGE_KEY_URL = 'firebaseUrl_hidrolisis';
-const LOCAL_KEY = 'pretestScores_local';
-const FIREBASE_PATH = 'pretest'; // path di Firebase — JANGAN diubah agar berbeda dari posttest
+const firebaseConfig = {
+  apiKey: "AIzaSyCqyau0UAXpWvoevzdVAJ3Nk0Co7_Ztikw",
+  authDomain: "pretest-hidrolisis-garam.firebaseapp.com",
+  databaseURL: "https://pretest-hidrolisis-garam-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "pretest-hidrolisis-garam",
+  storageBucket: "pretest-hidrolisis-garam.firebasestorage.app",
+  messagingSenderId: "866065642787",
+  appId: "1:866065642787:web:411a9d06f0a0a5d3130896",
+  measurementId: "G-HL3F6FTJMH"
+};
 
-let firebaseUrl = localStorage.getItem(STORAGE_KEY_URL) || '';
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
 
-function getApiUrl(){
-  if(!firebaseUrl) return null;
-  const base = firebaseUrl.replace(/\/+$/, '');
-  return `${base}/${FIREBASE_PATH}.json`;
-}
 
-// Simpan URL Firebase dari input pengguna
-function saveFirebaseUrl(){
-  const val = document.getElementById('firebaseUrlInput').value.trim();
-  if(!val){
-    alert('⚠️ URL tidak boleh kosong!');
-    return;
-  }
-  firebaseUrl = val.replace(/\/+$/, '');
-  localStorage.setItem(STORAGE_KEY_URL, firebaseUrl);
-  updateConnectionStatus(true);
-  loadScoreboard();
-}
-
-function updateConnectionStatus(saved){
-  const el = document.getElementById('connectionStatus');
-  const indicator = document.getElementById('syncIndicator');
-  if(firebaseUrl){
-    el.innerHTML = '<span class="connected-badge">✅ Cloud terhubung — skor tersinkron antar perangkat</span>';
-    if(indicator) indicator.className = 'connected-badge';
-    if(indicator) indicator.textContent = '☁️ Cloud Sync Aktif';
-    document.getElementById('firebaseUrlInput').value = firebaseUrl;
-  } else {
-    el.innerHTML = '';
-    if(indicator) indicator.className = 'offline-badge';
-    if(indicator) indicator.textContent = '💾 Mode Offline';
-  }
-}
-
-// =============================================
-// QUIZ DATA
-// =============================================
+/* =========================
+   2) DATA QUIZ
+========================= */
 const quizData=[
-  {
-    question:"Garam yang menghasilkan larutan basa saat dilarutkan dalam air adalah ...",
-    options:["NaCl","HCl","NH₄Cl","CH₃COONa","CH₃COOH"],
-    correct:3,
-    explanation:"CH₃COONa berasal dari asam lemah (CH₃COOH) dan basa kuat (NaOH) sehingga larutannya bersifat basa."
-  },
-  {
-    question:"Larutan NH₄Cl bersifat asam karena ...",
-    options:["NH₄⁺ menghasilkan H⁺","Cl⁻ menghasilkan OH⁻","Tidak terhidrolisis","pH = 7","Larut sempurna"],
-    correct:0,
-    explanation:"Ion NH₄⁺ terhidrolisis dalam air menghasilkan ion H⁺, sehingga larutan bersifat asam."
-  },
-  {
-    question:"NaCl bersifat netral karena ...",
-    options:["Tidak larut dalam air","Berasal dari asam kuat & basa kuat","Terhidrolisis total","pH > 7","Menghasilkan OH⁻"],
-    correct:1,
-    explanation:"NaCl berasal dari asam kuat (HCl) dan basa kuat (NaOH) sehingga tidak terhidrolisis dan bersifat netral."
-  },
-  {
-    question:"Ion yang terhidrolisis pada CH₃COONa adalah ...",
-    options:["Na⁺","H₂O","CH₃COO⁻","H⁺","OH⁻"],
-    correct:2,
-    explanation:"Ion asetat (CH₃COO⁻) bereaksi dengan air menghasilkan OH⁻, menyebabkan larutan bersifat basa."
-  },
-  {
-    question:"Reaksi antara ion garam dengan air disebut ...",
-    options:["Ionisasi","Netralisasi","Hidrolisis","Oksidasi","Reduksi"],
-    correct:2,
-    explanation:"Hidrolisis adalah reaksi antara ion-ion garam dengan molekul air yang menghasilkan ion H⁺ atau OH⁻."
-  },
-  {
-    question:"Garam dari asam lemah dan basa kuat akan menghasilkan larutan bersifat ...",
-    options:["Asam","Netral","Basa","Amfoter","Tidak tentu"],
-    correct:2,
-    explanation:"Anion dari asam lemah akan terhidrolisis menghasilkan OH⁻, sehingga larutan bersifat basa."
-  },
-  {
-    question:"NH₄⁺ berasal dari basa ...",
-    options:["Kuat","Lemah","Amfoter","Netral","Tidak bereaksi"],
-    correct:1,
-    explanation:"NH₄⁺ berasal dari basa lemah NH₃ (amonia)."
-  },
-  {
-    question:"Ion Cl⁻ tidak terhidrolisis karena berasal dari ...",
-    options:["Asam lemah","Asam kuat","Basa lemah","Basa netral","Garam"],
-    correct:1,
-    explanation:"Ion Cl⁻ berasal dari asam kuat HCl, sehingga tidak bereaksi dengan air (tidak terhidrolisis)."
-  },
-  {
-    question:"pH larutan CH₃COONa adalah ...",
-    options:["< 7","= 7","> 7","0","14"],
-    correct:2,
-    explanation:"CH₃COONa bersifat basa sehingga pH-nya lebih besar dari 7."
-  },
-  {
-    question:"Hidrolisis total terjadi pada garam dari ...",
-    options:["Asam kuat - basa kuat","Asam lemah - basa kuat","Asam kuat - basa lemah","Asam lemah - basa lemah","Tidak ada"],
-    correct:3,
-    explanation:"Hidrolisis total terjadi ketika kation dan anion sama-sama terhidrolisis, yaitu pada garam dari asam lemah dan basa lemah."
-  },
-  {
-    question:"Contoh garam yang bersifat asam adalah ...",
-    options:["NaCl","NH₄Cl","K₂SO₄","CH₃COONa","Na₂CO₃"],
-    correct:1,
-    explanation:"NH₄Cl berasal dari asam kuat (HCl) dan basa lemah (NH₃), sehingga bersifat asam."
-  },
-  {
-    question:"Larutan basa terasa licin karena ...",
-    options:["Mengandung H⁺","Mengandung OH⁻","pH rendah","Asam kuat","Netral"],
-    correct:1,
-    explanation:"Larutan basa mengandung ion OH⁻ yang membuat larutan terasa licin."
-  },
-  {
-    question:"Ion CO₃²⁻ dalam air akan menghasilkan ...",
-    options:["H⁺","OH⁻","H₂","O₂","CO₂"],
-    correct:1,
-    explanation:"Ion CO₃²⁻ bereaksi dengan air menghasilkan HCO₃⁻ dan OH⁻."
-  },
-  {
-    question:"Jika Ka > Kb maka larutan garam bersifat ...",
-    options:["Asam","Netral","Basa","Tidak tentu","Amfoter"],
-    correct:0,
-    explanation:"Jika Ka (tetapan ionisasi asam) lebih besar dari Kb (tetapan ionisasi basa), maka larutan bersifat asam."
-  },
-  {
-    question:"Jika Kb > Ka maka larutan garam bersifat ...",
-    options:["Asam","Netral","Basa","Amfoter","Tidak tentu"],
-    correct:2,
-    explanation:"Jika Kb lebih besar dari Ka, maka sifat basa lebih dominan sehingga larutan bersifat basa."
-  },
-  {
-    question:"Contoh garam netral adalah ...",
-    options:["NH₄Cl","NaCl","KCN","CH₃COONa","(NH₄)₂CO₃"],
-    correct:1,
-    explanation:"NaCl berasal dari asam kuat (HCl) dan basa kuat (NaOH) sehingga bersifat netral."
-  },
-  {
-    question:"Hidrolisis parsial terjadi pada ...",
-    options:["Asam kuat - basa kuat","Asam lemah - basa kuat","Asam lemah - basa lemah","Semua garam","Tidak ada"],
-    correct:1,
-    explanation:"Hidrolisis parsial terjadi ketika hanya satu ion yang terhidrolisis, misalnya pada garam dari asam lemah dan basa kuat."
-  },
-  {
-    question:"Ion yang TIDAK bereaksi dengan air adalah ...",
-    options:["NH₄⁺","CN⁻","Cl⁻","CH₃COO⁻","CO₃²⁻"],
-    correct:2,
-    explanation:"Ion Cl⁻ berasal dari asam kuat sehingga tidak bereaksi dengan air."
-  },
-  {
-    question:"CH₃COOH adalah asam ...",
-    options:["Kuat","Lemah","Netral","Amfoter","Basa"],
-    correct:1,
-    explanation:"CH₃COOH (asam asetat) adalah asam lemah yang tidak terionisasi sempurna dalam air."
-  },
-  {
-    question:"Tujuan utama mempelajari hidrolisis garam adalah untuk menentukan ...",
-    options:["Massa garam","Volume larutan","pH larutan","Suhu larutan","Warna larutan"],
-    correct:2,
-    explanation:"Dengan memahami hidrolisis garam, kita dapat menentukan pH larutan garam tersebut."
-  }
+  {question:"Garam yang menghasilkan larutan basa saat dilarutkan dalam air adalah ...",options:["NaCl","HCl","NH₄Cl","CH₃COONa","CH₃COOH"],correct:3,explanation:"CH₃COONa berasal dari asam lemah (CH₃COOH) dan basa kuat (NaOH) sehingga larutannya bersifat basa."},
+  {question:"Larutan NH₄Cl bersifat asam karena ...",options:["NH₄⁺ menghasilkan H⁺","Cl⁻ menghasilkan OH⁻","Tidak terhidrolisis","pH = 7","Larut sempurna"],correct:0,explanation:"Ion NH₄⁺ terhidrolisis dalam air menghasilkan ion H⁺, sehingga larutan bersifat asam."},
+  {question:"NaCl bersifat netral karena ...",options:["Tidak larut dalam air","Berasal dari asam kuat & basa kuat","Terhidrolisis total","pH > 7","Menghasilkan OH⁻"],correct:1,explanation:"NaCl berasal dari asam kuat (HCl) dan basa kuat (NaOH) sehingga tidak terhidrolisis dan bersifat netral."},
+  {question:"Ion yang terhidrolisis pada CH₃COONa adalah ...",options:["Na⁺","H₂O","CH₃COO⁻","H⁺","OH⁻"],correct:2,explanation:"Ion asetat (CH₃COO⁻) bereaksi dengan air menghasilkan OH⁻, menyebabkan larutan bersifat basa."},
+  {question:"Reaksi antara ion garam dengan air disebut ...",options:["Ionisasi","Netralisasi","Hidrolisis","Oksidasi","Reduksi"],correct:2,explanation:"Hidrolisis adalah reaksi antara ion-ion garam dengan molekul air yang menghasilkan ion H⁺ atau OH⁻."},
+  {question:"Garam dari asam lemah dan basa kuat akan menghasilkan larutan bersifat ...",options:["Asam","Netral","Basa","Amfoter","Tidak tentu"],correct:2,explanation:"Anion dari asam lemah akan terhidrolisis menghasilkan OH⁻, sehingga larutan bersifat basa."},
+  {question:"NH₄⁺ berasal dari basa ...",options:["Kuat","Lemah","Amfoter","Netral","Tidak bereaksi"],correct:1,explanation:"NH₄⁺ berasal dari basa lemah NH₃ (amonia)."},
+  {question:"Ion Cl⁻ tidak terhidrolisis karena berasal dari ...",options:["Asam lemah","Asam kuat","Basa lemah","Basa netral","Garam"],correct:1,explanation:"Ion Cl⁻ berasal dari asam kuat HCl, sehingga tidak bereaksi dengan air (tidak terhidrolisis)."},
+  {question:"pH larutan CH₃COONa adalah ...",options:["< 7","= 7","> 7","0","14"],correct:2,explanation:"CH₃COONa bersifat basa sehingga pH-nya lebih besar dari 7."},
+  {question:"Hidrolisis total terjadi pada garam dari ...",options:["Asam kuat - basa kuat","Asam lemah - basa kuat","Asam kuat - basa lemah","Asam lemah - basa lemah","Tidak ada"],correct:3,explanation:"Hidrolisis total terjadi ketika kation dan anion sama-sama terhidrolisis, yaitu pada garam dari asam lemah dan basa lemah."},
+  {question:"Contoh garam yang bersifat asam adalah ...",options:["NaCl","NH₄Cl","K₂SO₄","CH₃COONa","Na₂CO₃"],correct:1,explanation:"NH₄Cl berasal dari asam kuat (HCl) dan basa lemah (NH₃), sehingga bersifat asam."},
+  {question:"Larutan basa terasa licin karena ...",options:["Mengandung H⁺","Mengandung OH⁻","pH rendah","Asam kuat","Netral"],correct:1,explanation:"Larutan basa mengandung ion OH⁻ yang membuat larutan terasa licin."},
+  {question:"Ion CO₃²⁻ dalam air akan menghasilkan ...",options:["H⁺","OH⁻","H₂","O₂","CO₂"],correct:1,explanation:"Ion CO₃²⁻ bereaksi dengan air menghasilkan HCO₃⁻ dan OH⁻."},
+  {question:"Jika Ka > Kb maka larutan garam bersifat ...",options:["Asam","Netral","Basa","Tidak tentu","Amfoter"],correct:0,explanation:"Jika Ka (tetapan ionisasi asam) lebih besar dari Kb (tetapan ionisasi basa), maka larutan bersifat asam."},
+  {question:"Jika Kb > Ka maka larutan garam bersifat ...",options:["Asam","Netral","Basa","Amfoter","Tidak tentu"],correct:2,explanation:"Jika Kb lebih besar dari Ka, maka sifat basa lebih dominan sehingga larutan bersifat basa."},
+  {question:"Contoh garam netral adalah ...",options:["NH₄Cl","NaCl","KCN","CH₃COONa","(NH₄)₂CO₃"],correct:1,explanation:"NaCl berasal dari asam kuat (HCl) dan basa kuat (NaOH) sehingga bersifat netral."},
+  {question:"Hidrolisis parsial terjadi pada ...",options:["Asam kuat - basa kuat","Asam lemah - basa kuat","Asam lemah - basa lemah","Semua garam","Tidak ada"],correct:1,explanation:"Hidrolisis parsial terjadi ketika hanya satu ion yang terhidrolisis, misalnya pada garam dari asam lemah dan basa kuat."},
+  {question:"Ion yang TIDAK bereaksi dengan air adalah ...",options:["NH₄⁺","CN⁻","Cl⁻","CH₃COO⁻","CO₃²⁻"],correct:2,explanation:"Ion Cl⁻ berasal dari asam kuat sehingga tidak bereaksi dengan air."},
+  {question:"CH₃COOH adalah asam ...",options:["Kuat","Lemah","Netral","Amfoter","Basa"],correct:1,explanation:"CH₃COOH (asam asetat) adalah asam lemah yang tidak terionisasi sempurna dalam air."},
+  {question:"Tujuan utama mempelajari hidrolisis garam adalah untuk menentukan ...",options:["Massa garam","Volume larutan","pH larutan","Suhu larutan","Warna larutan"],correct:2,explanation:"Dengan memahami hidrolisis garam, kita dapat menentukan pH larutan garam tersebut."}
 ];
 
+/* =========================
+   3) STATE + ELEMENTS
+========================= */
 let index=0, score=0, answers=[], userData={};
 
 const qText=document.getElementById("questionText");
@@ -682,22 +448,26 @@ const progressText=document.getElementById("progressText");
 const prevBtn=document.getElementById("prevBtn");
 const nextBtn=document.getElementById("nextBtn");
 
-// Start Quiz
+/* =========================
+   4) QUIZ FUNCTIONS
+========================= */
 function startQuiz(){
   const nama = document.getElementById("nama").value.trim();
   const kelas = document.getElementById("kelas").value.trim();
   const absen = document.getElementById("absen").value.trim();
+
   if(!nama || !kelas || !absen){
     alert("⚠️ Mohon lengkapi semua identitas!");
     return;
   }
+
   userData = {nama, kelas, absen};
+
   document.getElementById("loginBox").classList.add("hidden");
   document.getElementById("quizBox").classList.remove("hidden");
   loadQuestion();
 }
 
-// Load Question
 function loadQuestion(){
   const q=quizData[index];
   qNum.textContent=`Pertanyaan ${index+1}`;
@@ -718,11 +488,11 @@ function loadQuestion(){
   });
 }
 
-// Select Option
 function selectOption(btn,i){
   const q=quizData[index];
   const buttons=document.querySelectorAll(".option-btn");
   buttons.forEach(b=>b.disabled=true);
+
   if(i===q.correct){
     btn.classList.add("correct");
     score++;
@@ -730,22 +500,25 @@ function selectOption(btn,i){
     btn.classList.add("wrong");
     buttons[q.correct].classList.add("correct");
   }
+
   expl.textContent="💡 "+q.explanation;
   expl.style.display="block";
   answers[index]=i;
   nextBtn.disabled=false;
 }
 
-// Next Button
 nextBtn.onclick=()=>{
-  if(index<quizData.length-1){index++;loadQuestion();}
-  else showResult();
+  if(index<quizData.length-1){
+    index++;
+    loadQuestion();
+  }else showResult();
 };
 
-// Previous Button
-prevBtn.onclick=()=>{index--;loadQuestion();};
+prevBtn.onclick=()=>{
+  index--;
+  loadQuestion();
+};
 
-// Show Result
 function showResult(){
   document.getElementById("quizBox").classList.add("hidden");
   document.getElementById("resultBox").classList.remove("hidden");
@@ -765,12 +538,14 @@ function showResult(){
     `;
     review.appendChild(div);
   });
-  saveScore();
+
+  saveScore(); // ✅ simpan ke Firebase
 }
 
-// Restart Quiz
 function restartQuiz(){
-  index=0;score=0;answers=[];
+  index=0;
+  score=0;
+  answers=[];
   document.getElementById("resultBox").classList.add("hidden");
   document.getElementById("loginBox").classList.remove("hidden");
   document.getElementById("nama").value="";
@@ -778,126 +553,69 @@ function restartQuiz(){
   document.getElementById("absen").value="";
 }
 
-// =============================================
-// CLOUD STORAGE (Firebase) + LOCAL FALLBACK
-// =============================================
-
-async function saveScore(){
-  const entry = {
-    ...userData,
-    score:`${score}/${quizData.length}`,
-    scoreNum: score,
+/* =========================
+   5) FIREBASE SAVE + REALTIME SCOREBOARD
+========================= */
+function saveScore(){
+  const scoreRef = ref(db, "pretestScores");
+  push(scoreRef, {
+    nama: userData.nama,
+    kelas: userData.kelas,
+    absen: userData.absen,
+    score: score,
     total: quizData.length,
-    time: new Date().toLocaleString('id-ID'),
-    ts: Date.now()
-  };
-
-  // Selalu simpan lokal sebagai backup
-  const local = JSON.parse(localStorage.getItem(LOCAL_KEY)||'[]');
-  local.push(entry);
-  localStorage.setItem(LOCAL_KEY, JSON.stringify(local));
-
-  // Coba simpan ke Firebase
-  if(firebaseUrl){
-    try{
-      const url = getApiUrl();
-      // Ambil data lama dulu
-      const res = await fetch(url);
-      const existing = await res.json() || [];
-      const arr = Array.isArray(existing) ? existing : Object.values(existing);
-      arr.push(entry);
-      await fetch(url, {
-        method:'PUT',
-        headers:{'Content-Type':'application/json'},
-        body: JSON.stringify(arr)
-      });
-      console.log('✅ Skor tersimpan ke cloud');
-    }catch(e){
-      console.warn('⚠️ Gagal simpan ke cloud, menggunakan data lokal', e);
-    }
-  }
-
-  loadScoreboard();
-}
-
-async function loadScoreboard(){
-  const scoreTable = document.getElementById("scoreTable");
-  scoreTable.innerHTML = '<tr class="loading-row"><td colspan="6">Memuat data...</td></tr>';
-
-  let data = [];
-
-  if(firebaseUrl){
-    try{
-      const url = getApiUrl();
-      const res = await fetch(url);
-      const raw = await res.json();
-      if(raw){
-        data = Array.isArray(raw) ? raw : Object.values(raw);
-      }
-    }catch(e){
-      console.warn('⚠️ Gagal mengambil data cloud, tampilkan lokal');
-      data = JSON.parse(localStorage.getItem(LOCAL_KEY)||'[]');
-    }
-  } else {
-    data = JSON.parse(localStorage.getItem(LOCAL_KEY)||'[]');
-  }
-
-  // Urutkan berdasarkan waktu terbaru
-  data.sort((a,b)=>(b.ts||0)-(a.ts||0));
-
-  renderScoreboard(data);
-}
-
-function renderScoreboard(data){
-  const scoreTable = document.getElementById("scoreTable");
-  scoreTable.innerHTML = '';
-
-  if(!data || data.length === 0){
-    scoreTable.innerHTML = '<tr><td colspan="6" style="color:var(--text-secondary)">Belum ada data</td></tr>';
-    return;
-  }
-
-  data.forEach((d,i)=>{
-    scoreTable.innerHTML += `<tr>
-      <td>${i+1}</td>
-      <td>${d.nama || '-'}</td>
-      <td>${d.kelas || '-'}</td>
-      <td>${d.absen || '-'}</td>
-      <td><strong>${d.score}</strong></td>
-      <td>${d.time || '-'}</td>
-    </tr>`;
+    time: new Date().toLocaleString("id-ID")
   });
 }
 
+// realtime listener (auto update semua device)
+const scoreRef = ref(db, "pretestScores");
+onValue(scoreRef, (snapshot) => {
+  const data = snapshot.val();
+  const scoreTable = document.getElementById("scoreTable");
+  scoreTable.innerHTML = "";
+
+  if (!data) {
+    scoreTable.innerHTML =
+      '<tr><td colspan="6" style="color:var(--text-secondary)">Belum ada data</td></tr>';
+    return;
+  }
+
+  // tampilkan yang terbaru di atas
+  const arr = Object.values(data).reverse();
+
+  let no = 1;
+  arr.forEach((d) => {
+    scoreTable.innerHTML += `
+      <tr>
+        <td>${no++}</td>
+        <td>${d.nama}</td>
+        <td>${d.kelas}</td>
+        <td>${d.absen}</td>
+        <td><strong>${d.score}/${d.total}</strong></td>
+        <td>${d.time}</td>
+      </tr>
+    `;
+  });
+});
+
 async function resetScore(){
-  const pass = prompt("🔑 Masukkan password guru:");
-  if(pass === "kimtaerae"){
-    // Reset lokal
-    localStorage.removeItem(LOCAL_KEY);
-
-    // Reset Firebase
-    if(firebaseUrl){
-      try{
-        await fetch(getApiUrl(), {
-          method:'PUT',
-          headers:{'Content-Type':'application/json'},
-          body:'[]'
-        });
-      }catch(e){console.warn('Gagal reset cloud')}
-    }
-
-    renderScoreboard([]);
+  const pass=prompt("🔑 Masukkan password guru:");
+  if(pass==="kimtaerae"){
+    // hapus semua data di pretestScores
+    await set(ref(db, "pretestScores"), null);
     alert("✅ Papan skor berhasil direset!");
-  } else if(pass !== null){
+  }else if(pass){
     alert("❌ Password salah!");
   }
 }
 
-// =============================================
-// INIT
-// =============================================
-updateConnectionStatus(false);
-loadScoreboard();
+/* =========================
+   6) EXPOSE FUNCTIONS (penting untuk tombol onclick)
+========================= */
+window.startQuiz = startQuiz;
+window.restartQuiz = restartQuiz;
+window.resetScore = resetScore;
 </script>
 
 </body>
