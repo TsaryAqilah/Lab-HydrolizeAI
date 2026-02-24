@@ -383,13 +383,10 @@ footer{
 
 </main>
 
-<footer>&copy; 2026 Tsary ▏ Sumari ▏ Departemen Kimia ▏ Universitas Negeri Malang</footer>
+<footer>&copy; 2026 Tsary ▏ Sumari ▏ Departemen Kimia ▏  Universitas Negeri Malang</footer>
 
-<!-- ✅ FIREBASE + QUIZ SCRIPT (GABUNG) -->
 <script type="module">
-/* =========================
-   1) FIREBASE REALTIME DB
-========================= */
+// ===== FIREBASE REALTIME DATABASE (GitHub Pages) =====
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
 import { getDatabase, ref, push, onValue, set } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-database.js";
 
@@ -407,36 +404,129 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-
-/* =========================
-   2) DATA QUIZ
-========================= */
 const quizData=[
-  {question:"Garam yang menghasilkan larutan basa saat dilarutkan dalam air adalah ...",options:["NaCl","HCl","NH₄Cl","CH₃COONa","CH₃COOH"],correct:3,explanation:"CH₃COONa berasal dari asam lemah (CH₃COOH) dan basa kuat (NaOH) sehingga larutannya bersifat basa."},
-  {question:"Larutan NH₄Cl bersifat asam karena ...",options:["NH₄⁺ menghasilkan H⁺","Cl⁻ menghasilkan OH⁻","Tidak terhidrolisis","pH = 7","Larut sempurna"],correct:0,explanation:"Ion NH₄⁺ terhidrolisis dalam air menghasilkan ion H⁺, sehingga larutan bersifat asam."},
-  {question:"NaCl bersifat netral karena ...",options:["Tidak larut dalam air","Berasal dari asam kuat & basa kuat","Terhidrolisis total","pH > 7","Menghasilkan OH⁻"],correct:1,explanation:"NaCl berasal dari asam kuat (HCl) dan basa kuat (NaOH) sehingga tidak terhidrolisis dan bersifat netral."},
-  {question:"Ion yang terhidrolisis pada CH₃COONa adalah ...",options:["Na⁺","H₂O","CH₃COO⁻","H⁺","OH⁻"],correct:2,explanation:"Ion asetat (CH₃COO⁻) bereaksi dengan air menghasilkan OH⁻, menyebabkan larutan bersifat basa."},
-  {question:"Reaksi antara ion garam dengan air disebut ...",options:["Ionisasi","Netralisasi","Hidrolisis","Oksidasi","Reduksi"],correct:2,explanation:"Hidrolisis adalah reaksi antara ion-ion garam dengan molekul air yang menghasilkan ion H⁺ atau OH⁻."},
-  {question:"Garam dari asam lemah dan basa kuat akan menghasilkan larutan bersifat ...",options:["Asam","Netral","Basa","Amfoter","Tidak tentu"],correct:2,explanation:"Anion dari asam lemah akan terhidrolisis menghasilkan OH⁻, sehingga larutan bersifat basa."},
-  {question:"NH₄⁺ berasal dari basa ...",options:["Kuat","Lemah","Amfoter","Netral","Tidak bereaksi"],correct:1,explanation:"NH₄⁺ berasal dari basa lemah NH₃ (amonia)."},
-  {question:"Ion Cl⁻ tidak terhidrolisis karena berasal dari ...",options:["Asam lemah","Asam kuat","Basa lemah","Basa netral","Garam"],correct:1,explanation:"Ion Cl⁻ berasal dari asam kuat HCl, sehingga tidak bereaksi dengan air (tidak terhidrolisis)."},
-  {question:"pH larutan CH₃COONa adalah ...",options:["< 7","= 7","> 7","0","14"],correct:2,explanation:"CH₃COONa bersifat basa sehingga pH-nya lebih besar dari 7."},
-  {question:"Hidrolisis total terjadi pada garam dari ...",options:["Asam kuat - basa kuat","Asam lemah - basa kuat","Asam kuat - basa lemah","Asam lemah - basa lemah","Tidak ada"],correct:3,explanation:"Hidrolisis total terjadi ketika kation dan anion sama-sama terhidrolisis, yaitu pada garam dari asam lemah dan basa lemah."},
-  {question:"Contoh garam yang bersifat asam adalah ...",options:["NaCl","NH₄Cl","K₂SO₄","CH₃COONa","Na₂CO₃"],correct:1,explanation:"NH₄Cl berasal dari asam kuat (HCl) dan basa lemah (NH₃), sehingga bersifat asam."},
-  {question:"Larutan basa terasa licin karena ...",options:["Mengandung H⁺","Mengandung OH⁻","pH rendah","Asam kuat","Netral"],correct:1,explanation:"Larutan basa mengandung ion OH⁻ yang membuat larutan terasa licin."},
-  {question:"Ion CO₃²⁻ dalam air akan menghasilkan ...",options:["H⁺","OH⁻","H₂","O₂","CO₂"],correct:1,explanation:"Ion CO₃²⁻ bereaksi dengan air menghasilkan HCO₃⁻ dan OH⁻."},
-  {question:"Jika Ka > Kb maka larutan garam bersifat ...",options:["Asam","Netral","Basa","Tidak tentu","Amfoter"],correct:0,explanation:"Jika Ka (tetapan ionisasi asam) lebih besar dari Kb (tetapan ionisasi basa), maka larutan bersifat asam."},
-  {question:"Jika Kb > Ka maka larutan garam bersifat ...",options:["Asam","Netral","Basa","Amfoter","Tidak tentu"],correct:2,explanation:"Jika Kb lebih besar dari Ka, maka sifat basa lebih dominan sehingga larutan bersifat basa."},
-  {question:"Contoh garam netral adalah ...",options:["NH₄Cl","NaCl","KCN","CH₃COONa","(NH₄)₂CO₃"],correct:1,explanation:"NaCl berasal dari asam kuat (HCl) dan basa kuat (NaOH) sehingga bersifat netral."},
-  {question:"Hidrolisis parsial terjadi pada ...",options:["Asam kuat - basa kuat","Asam lemah - basa kuat","Asam lemah - basa lemah","Semua garam","Tidak ada"],correct:1,explanation:"Hidrolisis parsial terjadi ketika hanya satu ion yang terhidrolisis, misalnya pada garam dari asam lemah dan basa kuat."},
-  {question:"Ion yang TIDAK bereaksi dengan air adalah ...",options:["NH₄⁺","CN⁻","Cl⁻","CH₃COO⁻","CO₃²⁻"],correct:2,explanation:"Ion Cl⁻ berasal dari asam kuat sehingga tidak bereaksi dengan air."},
-  {question:"CH₃COOH adalah asam ...",options:["Kuat","Lemah","Netral","Amfoter","Basa"],correct:1,explanation:"CH₃COOH (asam asetat) adalah asam lemah yang tidak terionisasi sempurna dalam air."},
-  {question:"Tujuan utama mempelajari hidrolisis garam adalah untuk menentukan ...",options:["Massa garam","Volume larutan","pH larutan","Suhu larutan","Warna larutan"],correct:2,explanation:"Dengan memahami hidrolisis garam, kita dapat menentukan pH larutan garam tersebut."}
+  {
+    question:"Garam yang menghasilkan larutan basa saat dilarutkan dalam air adalah ...",
+    options:["NaCl","HCl","NH₄Cl","CH₃COONa","CH₃COOH"],
+    correct:3,
+    explanation:"CH₃COONa berasal dari asam lemah (CH₃COOH) dan basa kuat (NaOH) sehingga larutannya bersifat basa."
+  },
+  {
+    question:"Larutan NH₄Cl bersifat asam karena ...",
+    options:["NH₄⁺ menghasilkan H⁺","Cl⁻ menghasilkan OH⁻","Tidak terhidrolisis","pH = 7","Larut sempurna"],
+    correct:0,
+    explanation:"Ion NH₄⁺ terhidrolisis dalam air menghasilkan ion H⁺, sehingga larutan bersifat asam."
+  },
+  {
+    question:"NaCl bersifat netral karena ...",
+    options:["Tidak larut dalam air","Berasal dari asam kuat & basa kuat","Terhidrolisis total","pH > 7","Menghasilkan OH⁻"],
+    correct:1,
+    explanation:"NaCl berasal dari asam kuat (HCl) dan basa kuat (NaOH) sehingga tidak terhidrolisis dan bersifat netral."
+  },
+  {
+    question:"Ion yang terhidrolisis pada CH₃COONa adalah ...",
+    options:["Na⁺","H₂O","CH₃COO⁻","H⁺","OH⁻"],
+    correct:2,
+    explanation:"Ion asetat (CH₃COO⁻) bereaksi dengan air menghasilkan OH⁻, menyebabkan larutan bersifat basa."
+  },
+  {
+    question:"Reaksi antara ion garam dengan air disebut ...",
+    options:["Ionisasi","Netralisasi","Hidrolisis","Oksidasi","Reduksi"],
+    correct:2,
+    explanation:"Hidrolisis adalah reaksi antara ion-ion garam dengan molekul air yang menghasilkan ion H⁺ atau OH⁻."
+  },
+  {
+    question:"Garam dari asam lemah dan basa kuat akan menghasilkan larutan bersifat ...",
+    options:["Asam","Netral","Basa","Amfoter","Tidak tentu"],
+    correct:2,
+    explanation:"Anion dari asam lemah akan terhidrolisis menghasilkan OH⁻, sehingga larutan bersifat basa."
+  },
+  {
+    question:"NH₄⁺ berasal dari basa ...",
+    options:["Kuat","Lemah","Amfoter","Netral","Tidak bereaksi"],
+    correct:1,
+    explanation:"NH₄⁺ berasal dari basa lemah NH₃ (amonia)."
+  },
+  {
+    question:"Ion Cl⁻ tidak terhidrolisis karena berasal dari ...",
+    options:["Asam lemah","Asam kuat","Basa lemah","Basa netral","Garam"],
+    correct:1,
+    explanation:"Ion Cl⁻ berasal dari asam kuat HCl, sehingga tidak bereaksi dengan air (tidak terhidrolisis)."
+  },
+  {
+    question:"pH larutan CH₃COONa adalah ...",
+    options:["< 7","= 7","> 7","0","14"],
+    correct:2,
+    explanation:"CH₃COONa bersifat basa sehingga pH-nya lebih besar dari 7."
+  },
+  {
+    question:"Hidrolisis total terjadi pada garam dari ...",
+    options:["Asam kuat - basa kuat","Asam lemah - basa kuat","Asam kuat - basa lemah","Asam lemah - basa lemah","Tidak ada"],
+    correct:3,
+    explanation:"Hidrolisis total terjadi ketika kation dan anion sama-sama terhidrolisis, yaitu pada garam dari asam lemah dan basa lemah."
+  },
+  {
+    question:"Contoh garam yang bersifat asam adalah ...",
+    options:["NaCl","NH₄Cl","K₂SO₄","CH₃COONa","Na₂CO₃"],
+    correct:1,
+    explanation:"NH₄Cl berasal dari asam kuat (HCl) dan basa lemah (NH₃), sehingga bersifat asam."
+  },
+  {
+    question:"Larutan basa terasa licin karena ...",
+    options:["Mengandung H⁺","Mengandung OH⁻","pH rendah","Asam kuat","Netral"],
+    correct:1,
+    explanation:"Larutan basa mengandung ion OH⁻ yang membuat larutan terasa licin."
+  },
+  {
+    question:"Ion CO₃²⁻ dalam air akan menghasilkan ...",
+    options:["H⁺","OH⁻","H₂","O₂","CO₂"],
+    correct:1,
+    explanation:"Ion CO₃²⁻ bereaksi dengan air menghasilkan HCO₃⁻ dan OH⁻."
+  },
+  {
+    question:"Jika Ka > Kb maka larutan garam bersifat ...",
+    options:["Asam","Netral","Basa","Tidak tentu","Amfoter"],
+    correct:0,
+    explanation:"Jika Ka (tetapan ionisasi asam) lebih besar dari Kb (tetapan ionisasi basa), maka larutan bersifat asam."
+  },
+  {
+    question:"Jika Kb > Ka maka larutan garam bersifat ...",
+    options:["Asam","Netral","Basa","Amfoter","Tidak tentu"],
+    correct:2,
+    explanation:"Jika Kb lebih besar dari Ka, maka sifat basa lebih dominan sehingga larutan bersifat basa."
+  },
+  {
+    question:"Contoh garam netral adalah ...",
+    options:["NH₄Cl","NaCl","KCN","CH₃COONa","(NH₄)₂CO₃"],
+    correct:1,
+    explanation:"NaCl berasal dari asam kuat (HCl) dan basa kuat (NaOH) sehingga bersifat netral."
+  },
+  {
+    question:"Hidrolisis parsial terjadi pada ...",
+    options:["Asam kuat - basa kuat","Asam lemah - basa kuat","Asam lemah - basa lemah","Semua garam","Tidak ada"],
+    correct:1,
+    explanation:"Hidrolisis parsial terjadi ketika hanya satu ion yang terhidrolisis, misalnya pada garam dari asam lemah dan basa kuat."
+  },
+  {
+    question:"Ion yang TIDAK bereaksi dengan air adalah ...",
+    options:["NH₄⁺","CN⁻","Cl⁻","CH₃COO⁻","CO₃²⁻"],
+    correct:2,
+    explanation:"Ion Cl⁻ berasal dari asam kuat sehingga tidak bereaksi dengan air."
+  },
+  {
+    question:"CH₃COOH adalah asam ...",
+    options:["Kuat","Lemah","Netral","Amfoter","Basa"],
+    correct:1,
+    explanation:"CH₃COOH (asam asetat) adalah asam lemah yang tidak terionisasi sempurna dalam air."
+  },
+  {
+    question:"Tujuan utama mempelajari hidrolisis garam adalah untuk menentukan ...",
+    options:["Massa garam","Volume larutan","pH larutan","Suhu larutan","Warna larutan"],
+    correct:2,
+    explanation:"Dengan memahami hidrolisis garam, kita dapat menentukan pH larutan garam tersebut."
+  }
 ];
 
-/* =========================
-   3) STATE + ELEMENTS
-========================= */
 let index=0, score=0, answers=[], userData={};
 
 const qText=document.getElementById("questionText");
@@ -448,26 +538,24 @@ const progressText=document.getElementById("progressText");
 const prevBtn=document.getElementById("prevBtn");
 const nextBtn=document.getElementById("nextBtn");
 
-/* =========================
-   4) QUIZ FUNCTIONS
-========================= */
+// Start Quiz
 function startQuiz(){
   const nama = document.getElementById("nama").value.trim();
   const kelas = document.getElementById("kelas").value.trim();
   const absen = document.getElementById("absen").value.trim();
-
+  
   if(!nama || !kelas || !absen){
     alert("⚠️ Mohon lengkapi semua identitas!");
     return;
   }
-
+  
   userData = {nama, kelas, absen};
-
   document.getElementById("loginBox").classList.add("hidden");
   document.getElementById("quizBox").classList.remove("hidden");
   loadQuestion();
 }
 
+// Load Question
 function loadQuestion(){
   const q=quizData[index];
   qNum.textContent=`Pertanyaan ${index+1}`;
@@ -488,6 +576,7 @@ function loadQuestion(){
   });
 }
 
+// Select Option
 function selectOption(btn,i){
   const q=quizData[index];
   const buttons=document.querySelectorAll(".option-btn");
@@ -507,6 +596,7 @@ function selectOption(btn,i){
   nextBtn.disabled=false;
 }
 
+// Next Button
 nextBtn.onclick=()=>{
   if(index<quizData.length-1){
     index++;
@@ -514,11 +604,13 @@ nextBtn.onclick=()=>{
   }else showResult();
 };
 
+// Previous Button
 prevBtn.onclick=()=>{
   index--;
   loadQuestion();
 };
 
+// Show Result
 function showResult(){
   document.getElementById("quizBox").classList.add("hidden");
   document.getElementById("resultBox").classList.remove("hidden");
@@ -538,10 +630,12 @@ function showResult(){
     `;
     review.appendChild(div);
   });
-
-  saveScore(); // ✅ simpan ke Firebase
+  
+  saveScore();
+  loadScoreboard();
 }
 
+// Restart Quiz
 function restartQuiz(){
   index=0;
   score=0;
@@ -553,12 +647,10 @@ function restartQuiz(){
   document.getElementById("absen").value="";
 }
 
-/* =========================
-   5) FIREBASE SAVE + REALTIME SCOREBOARD
-========================= */
+// Save Score to LocalStorage
 function saveScore(){
   const scoreRef = ref(db, "pretestScores");
-  push(scoreRef, {
+  return push(scoreRef, {
     nama: userData.nama,
     kelas: userData.kelas,
     absen: userData.absen,
@@ -567,8 +659,47 @@ function saveScore(){
     time: new Date().toLocaleString("id-ID")
   });
 }
+/${quizData.length}`,
+    time:new Date().toLocaleString('id-ID')
+  });
+  localStorage.setItem("pretestScores",JSON.stringify(data));
+}
 
-// realtime listener (auto update semua device)
+// Load Scoreboard
+function loadScoreboard(){
+  // Scoreboard sekarang real-time dari Firebase (lihat listener di bawah).
+}
+</td>
+      <td>${d.nama}</td>
+      <td>${d.kelas}</td>
+      <td>${d.absen}</td>
+      <td><strong>${d.score}</strong></td>
+      <td>${d.time}</td>
+    </tr>`;
+  });
+  
+  if(data.length===0){
+    scoreTable.innerHTML='<tr><td colspan="6" style="color:var(--text-secondary)">Belum ada data</td></tr>';
+  }
+}
+
+// Reset Scoreboard
+async function resetScore(){
+  const pass=prompt("🔑 Masukkan password guru:");
+  if(pass==="kimtaerae"){
+    await set(ref(db, "pretestScores"), null);
+    alert("✅ Papan skor berhasil direset!");
+  }else if(pass){
+    alert("❌ Password salah!");
+  }
+}
+else if(pass){
+    alert("❌ Password salah!");
+  }
+}
+
+
+// ===== REALTIME SCOREBOARD LISTENER =====
 const scoreRef = ref(db, "pretestScores");
 onValue(scoreRef, (snapshot) => {
   const data = snapshot.val();
@@ -576,46 +707,30 @@ onValue(scoreRef, (snapshot) => {
   scoreTable.innerHTML = "";
 
   if (!data) {
-    scoreTable.innerHTML =
-      '<tr><td colspan="6" style="color:var(--text-secondary)">Belum ada data</td></tr>';
+    scoreTable.innerHTML = '<tr><td colspan="6" style="color:var(--text-secondary)">Belum ada data</td></tr>';
     return;
   }
 
-  // tampilkan yang terbaru di atas
+  // Tampilkan yang terbaru di atas (berdasarkan urutan push)
   const arr = Object.values(data).reverse();
-
   let no = 1;
   arr.forEach((d) => {
-    scoreTable.innerHTML += `
-      <tr>
-        <td>${no++}</td>
-        <td>${d.nama}</td>
-        <td>${d.kelas}</td>
-        <td>${d.absen}</td>
-        <td><strong>${d.score}/${d.total}</strong></td>
-        <td>${d.time}</td>
-      </tr>
-    `;
+    scoreTable.innerHTML += `<tr>
+      <td>${no++}</td>
+      <td>${d.nama ?? "-"}</td>
+      <td>${d.kelas ?? "-"}</td>
+      <td>${d.absen ?? "-"}</td>
+      <td><strong>${d.score ?? "-"}/${d.total ?? "-"}</strong></td>
+      <td>${d.time ?? "-"}</td>
+    </tr>`;
   });
 });
 
-async function resetScore(){
-  const pass=prompt("🔑 Masukkan password guru:");
-  if(pass==="kimtaerae"){
-    // hapus semua data di pretestScores
-    await set(ref(db, "pretestScores"), null);
-    alert("✅ Papan skor berhasil direset!");
-  }else if(pass){
-    alert("❌ Password salah!");
-  }
-}
-
-/* =========================
-   6) EXPOSE FUNCTIONS (penting untuk tombol onclick)
-========================= */
+// Penting: karena pakai <script type="module">, fungsi onclick harus diekspor ke window
 window.startQuiz = startQuiz;
 window.restartQuiz = restartQuiz;
 window.resetScore = resetScore;
+
 </script>
 
 </body>
