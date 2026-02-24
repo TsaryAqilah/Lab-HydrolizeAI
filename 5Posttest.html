@@ -15,9 +15,9 @@
   --bg-secondary:#ffffff;
   --text-primary:#1e293b;
   --text-secondary:#475569;
-  --accent:#06b6d4;
-  --accent-hover:#0891b2;
-  --shadow:rgba(6,182,212,0.15);
+  --accent:#8b5cf6;
+  --accent-hover:#7c3aed;
+  --shadow:rgba(139,92,246,0.15);
 }
 
 body{
@@ -71,6 +71,83 @@ main{
 
 h2{color:var(--accent);margin-bottom:1rem}
 
+/* ===== SETUP BANNER ===== */
+.setup-banner{
+  background:linear-gradient(135deg,#f3e8ff,#e9d5ff);
+  border:2px solid #a855f7;
+  border-radius:15px;
+  padding:1.2rem 1.5rem;
+  margin-bottom:1.5rem;
+}
+.setup-banner summary{
+  cursor:pointer;
+  font-weight:600;
+  color:#6b21a8;
+  font-size:0.95rem;
+}
+.setup-banner ol{
+  margin-top:0.8rem;
+  padding-left:1.2rem;
+  color:#581c87;
+  font-size:0.88rem;
+  line-height:2;
+}
+.setup-banner code{
+  background:#fff;
+  border:1px solid #a855f7;
+  border-radius:6px;
+  padding:2px 6px;
+  font-size:0.85rem;
+  font-family:monospace;
+}
+.setup-input{
+  display:flex;
+  gap:0.5rem;
+  margin-top:0.8rem;
+  flex-wrap:wrap;
+}
+.setup-input input{
+  flex:1;
+  min-width:200px;
+  padding:0.5rem 0.8rem;
+  border-radius:10px;
+  border:2px solid #a855f7;
+  font-size:0.9rem;
+  margin-bottom:0;
+}
+.setup-input button{
+  background:#a855f7;
+  color:white;
+  border:none;
+  padding:0.5rem 1.2rem;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:600;
+}
+.setup-input button:hover{background:#9333ea}
+.connected-badge{
+  display:inline-block;
+  background:#dcfce7;
+  color:#166534;
+  border:2px solid #22c55e;
+  border-radius:20px;
+  padding:0.3rem 1rem;
+  font-size:0.85rem;
+  font-weight:600;
+  margin-top:0.5rem;
+}
+.offline-badge{
+  display:inline-block;
+  background:#f3e8ff;
+  color:#6b21a8;
+  border:2px solid #a855f7;
+  border-radius:20px;
+  padding:0.3rem 1rem;
+  font-size:0.85rem;
+  font-weight:600;
+  margin-top:0.5rem;
+}
+
 /* ===== LOGIN FORM ===== */
 input{
   width:100%;
@@ -120,7 +197,7 @@ input:focus{
 }
 .progress-fill{
   height:100%;
-  background:linear-gradient(135deg,#06b6d4,#3b82f6);
+  background:linear-gradient(135deg,#8b5cf6,#ec4899);
   transition:width 0.3s;
 }
 
@@ -146,7 +223,7 @@ input:focus{
 }
 .option-btn:hover:not(:disabled){
   border-color:var(--accent);
-  background:#ecfeff;
+  background:#f5f3ff;
   transform:translateX(5px);
 }
 .option-btn.correct{
@@ -165,7 +242,7 @@ input:focus{
 .explanation{
   margin-top:1.5rem;
   padding:1.2rem;
-  background:#e0f2fe;
+  background:#f3e8ff;
   border-left:5px solid var(--accent);
   border-radius:10px;
   display:none;
@@ -252,13 +329,21 @@ th,td{
   text-align:center;
 }
 th{
-  background:#e0f2fe;
+  background:#f3e8ff;
   color:var(--accent);
   font-weight:600;
 }
 tr:hover{
-  background:#f0f9ff;
+  background:#faf5ff;
 }
+
+/* ===== LOADING ===== */
+.loading-row td{
+  color:var(--text-secondary);
+  font-style:italic;
+  animation:pulse 1.5s infinite;
+}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
 
 /* ===== FOOTER ===== */
 footer{
@@ -316,6 +401,24 @@ footer{
 
 <main>
 
+<!-- SETUP BANNER -->
+<details class="setup-banner" id="setupBanner">
+  <summary>⚙️ Pengaturan Cloud Sync (Klik untuk melihat) — Skor tersinkron antar perangkat</summary>
+  <ol>
+    <li>Buka <a href="https://firebase.google.com" target="_blank"><strong>firebase.google.com</strong></a> → Masuk dengan akun Google</li>
+    <li>Klik <strong>Get started</strong> → <strong>Create a project</strong> → beri nama bebas (misal: <code>hidrolisis-garam</code>)</li>
+    <li>Di dashboard, klik <strong>Realtime Database</strong> → <strong>Create Database</strong> → pilih lokasi → pilih <strong>Start in test mode</strong></li>
+    <li>Copy URL database Anda (format: <code>https://nama-project-default-rtdb.firebaseio.com</code>)</li>
+    <li>Tempel URL di bawah lalu klik Simpan: <em>(URL yang sama dengan pretest boleh digunakan)</em></li>
+  </ol>
+  <div class="setup-input">
+    <input type="text" id="firebaseUrlInput" placeholder="https://nama-project-default-rtdb.firebaseio.com">
+    <button onclick="saveFirebaseUrl()">💾 Simpan</button>
+  </div>
+  <div id="connectionStatus"></div>
+  <p style="margin-top:0.8rem;font-size:0.8rem;color:#6b21a8">⚠️ Jika belum diatur, skor hanya tersimpan di perangkat ini (offline mode).</p>
+</details>
+
 <!-- LOGIN BOX -->
 <div id="loginBox">
   <h2>🔐 Identitas Peserta</h2>
@@ -362,8 +465,13 @@ footer{
 <!-- SCOREBOARD -->
 <hr style="margin:3rem 0 2rem;border:none;border-top:2px solid #e2e8f0">
 
-<h2>📊 Papan Skor</h2>
-<p style="color:var(--text-secondary);margin-bottom:1rem">Daftar peserta yang telah mengerjakan posttest</p>
+<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;margin-bottom:0.5rem">
+  <div>
+    <h2 style="margin-bottom:0.2rem">📊 Papan Skor — Posttest</h2>
+    <p style="color:var(--text-secondary);font-size:0.9rem">Daftar peserta yang telah mengerjakan posttest</p>
+  </div>
+  <span id="syncIndicator" class="offline-badge">💾 Mode Offline</span>
+</div>
 
 <table>
 <thead>
@@ -376,16 +484,64 @@ footer{
   <th>Waktu</th>
 </tr>
 </thead>
-<tbody id="scoreTable"></tbody>
+<tbody id="scoreTable"><tr class="loading-row"><td colspan="6">Memuat data...</td></tr></tbody>
 </table>
 
-<button class="primary" style="margin-top:1.5rem" onclick="resetScore()">🔑 Reset Papan Skor (Guru)</button>
+<div style="display:flex;gap:1rem;margin-top:1.5rem;flex-wrap:wrap">
+  <button class="primary" onclick="loadScoreboard()">🔄 Refresh Skor</button>
+  <button class="primary" style="background:#ef4444" onclick="resetScore()">🔑 Reset Papan Skor (Guru)</button>
+</div>
 
 </main>
 
-<footer>&copy; 2026 Tsary ▏ Sumari ▏ Departemen Kimia ▏  Universitas Negeri Malang</footer>
+<footer>&copy; 2026 Tsary ▏ Sumari ▏ Departemen Kimia ▏ Universitas Negeri Malang</footer>
 
 <script>
+// =============================================
+// KONFIGURASI FIREBASE
+// =============================================
+const STORAGE_KEY_URL = 'firebaseUrl_hidrolisis'; // sama dengan pretest — berbagi 1 project Firebase
+const LOCAL_KEY = 'posttestScores_local';
+const FIREBASE_PATH = 'posttest'; // BERBEDA dari pretest agar skor tidak tercampur
+
+let firebaseUrl = localStorage.getItem(STORAGE_KEY_URL) || '';
+
+function getApiUrl(){
+  if(!firebaseUrl) return null;
+  const base = firebaseUrl.replace(/\/+$/, '');
+  return `${base}/${FIREBASE_PATH}.json`;
+}
+
+function saveFirebaseUrl(){
+  const val = document.getElementById('firebaseUrlInput').value.trim();
+  if(!val){
+    alert('⚠️ URL tidak boleh kosong!');
+    return;
+  }
+  firebaseUrl = val.replace(/\/+$/, '');
+  localStorage.setItem(STORAGE_KEY_URL, firebaseUrl);
+  updateConnectionStatus(true);
+  loadScoreboard();
+}
+
+function updateConnectionStatus(saved){
+  const el = document.getElementById('connectionStatus');
+  const indicator = document.getElementById('syncIndicator');
+  if(firebaseUrl){
+    el.innerHTML = '<span class="connected-badge">✅ Cloud terhubung — skor tersinkron antar perangkat</span>';
+    if(indicator) indicator.className = 'connected-badge';
+    if(indicator) indicator.textContent = '☁️ Cloud Sync Aktif';
+    document.getElementById('firebaseUrlInput').value = firebaseUrl;
+  } else {
+    el.innerHTML = '';
+    if(indicator) indicator.className = 'offline-badge';
+    if(indicator) indicator.textContent = '💾 Mode Offline';
+  }
+}
+
+// =============================================
+// QUIZ DATA
+// =============================================
 const quizData=[
   {
     question:"Garam yang menghasilkan larutan basa saat dilarutkan dalam air adalah ...",
@@ -520,24 +676,20 @@ const progressText=document.getElementById("progressText");
 const prevBtn=document.getElementById("prevBtn");
 const nextBtn=document.getElementById("nextBtn");
 
-// Start Quiz
 function startQuiz(){
   const nama = document.getElementById("nama").value.trim();
   const kelas = document.getElementById("kelas").value.trim();
   const absen = document.getElementById("absen").value.trim();
-  
   if(!nama || !kelas || !absen){
     alert("⚠️ Mohon lengkapi semua identitas!");
     return;
   }
-  
   userData = {nama, kelas, absen};
   document.getElementById("loginBox").classList.add("hidden");
   document.getElementById("quizBox").classList.remove("hidden");
   loadQuestion();
 }
 
-// Load Question
 function loadQuestion(){
   const q=quizData[index];
   qNum.textContent=`Pertanyaan ${index+1}`;
@@ -558,12 +710,10 @@ function loadQuestion(){
   });
 }
 
-// Select Option
 function selectOption(btn,i){
   const q=quizData[index];
   const buttons=document.querySelectorAll(".option-btn");
   buttons.forEach(b=>b.disabled=true);
-
   if(i===q.correct){
     btn.classList.add("correct");
     score++;
@@ -571,28 +721,19 @@ function selectOption(btn,i){
     btn.classList.add("wrong");
     buttons[q.correct].classList.add("correct");
   }
-
   expl.textContent="💡 "+q.explanation;
   expl.style.display="block";
   answers[index]=i;
   nextBtn.disabled=false;
 }
 
-// Next Button
 nextBtn.onclick=()=>{
-  if(index<quizData.length-1){
-    index++;
-    loadQuestion();
-  }else showResult();
+  if(index<quizData.length-1){index++;loadQuestion();}
+  else showResult();
 };
 
-// Previous Button
-prevBtn.onclick=()=>{
-  index--;
-  loadQuestion();
-};
+prevBtn.onclick=()=>{index--;loadQuestion();};
 
-// Show Result
 function showResult(){
   document.getElementById("quizBox").classList.add("hidden");
   document.getElementById("resultBox").classList.remove("hidden");
@@ -612,16 +753,11 @@ function showResult(){
     `;
     review.appendChild(div);
   });
-  
   saveScore();
-  loadScoreboard();
 }
 
-// Restart Quiz
 function restartQuiz(){
-  index=0;
-  score=0;
-  answers=[];
+  index=0;score=0;answers=[];
   document.getElementById("resultBox").classList.add("hidden");
   document.getElementById("loginBox").classList.remove("hidden");
   document.getElementById("nama").value="";
@@ -629,52 +765,116 @@ function restartQuiz(){
   document.getElementById("absen").value="";
 }
 
-// Save Score to LocalStorage
-function saveScore(){
-  const data=JSON.parse(localStorage.getItem("posttestScores")||"[]");
-  data.push({
+// =============================================
+// CLOUD STORAGE (Firebase) + LOCAL FALLBACK
+// =============================================
+
+async function saveScore(){
+  const entry = {
     ...userData,
     score:`${score}/${quizData.length}`,
-    time:new Date().toLocaleString('id-ID')
-  });
-  localStorage.setItem("posttestScores",JSON.stringify(data));
+    scoreNum: score,
+    total: quizData.length,
+    time: new Date().toLocaleString('id-ID'),
+    ts: Date.now()
+  };
+
+  const local = JSON.parse(localStorage.getItem(LOCAL_KEY)||'[]');
+  local.push(entry);
+  localStorage.setItem(LOCAL_KEY, JSON.stringify(local));
+
+  if(firebaseUrl){
+    try{
+      const url = getApiUrl();
+      const res = await fetch(url);
+      const existing = await res.json() || [];
+      const arr = Array.isArray(existing) ? existing : Object.values(existing);
+      arr.push(entry);
+      await fetch(url, {
+        method:'PUT',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(arr)
+      });
+      console.log('✅ Skor posttest tersimpan ke cloud');
+    }catch(e){
+      console.warn('⚠️ Gagal simpan ke cloud', e);
+    }
+  }
+
+  loadScoreboard();
 }
 
-// Load Scoreboard
-function loadScoreboard(){
-  const data=JSON.parse(localStorage.getItem("posttestScores")||"[]");
-  const scoreTable=document.getElementById("scoreTable");
-  scoreTable.innerHTML="";
-  
+async function loadScoreboard(){
+  const scoreTable = document.getElementById("scoreTable");
+  scoreTable.innerHTML = '<tr class="loading-row"><td colspan="6">Memuat data...</td></tr>';
+
+  let data = [];
+
+  if(firebaseUrl){
+    try{
+      const url = getApiUrl();
+      const res = await fetch(url);
+      const raw = await res.json();
+      if(raw){
+        data = Array.isArray(raw) ? raw : Object.values(raw);
+      }
+    }catch(e){
+      console.warn('⚠️ Gagal mengambil data cloud, tampilkan lokal');
+      data = JSON.parse(localStorage.getItem(LOCAL_KEY)||'[]');
+    }
+  } else {
+    data = JSON.parse(localStorage.getItem(LOCAL_KEY)||'[]');
+  }
+
+  data.sort((a,b)=>(b.ts||0)-(a.ts||0));
+  renderScoreboard(data);
+}
+
+function renderScoreboard(data){
+  const scoreTable = document.getElementById("scoreTable");
+  scoreTable.innerHTML = '';
+
+  if(!data || data.length === 0){
+    scoreTable.innerHTML = '<tr><td colspan="6" style="color:var(--text-secondary)">Belum ada data</td></tr>';
+    return;
+  }
+
   data.forEach((d,i)=>{
-    scoreTable.innerHTML+=`<tr>
+    scoreTable.innerHTML += `<tr>
       <td>${i+1}</td>
-      <td>${d.nama}</td>
-      <td>${d.kelas}</td>
-      <td>${d.absen}</td>
+      <td>${d.nama || '-'}</td>
+      <td>${d.kelas || '-'}</td>
+      <td>${d.absen || '-'}</td>
       <td><strong>${d.score}</strong></td>
-      <td>${d.time}</td>
+      <td>${d.time || '-'}</td>
     </tr>`;
   });
-  
-  if(data.length===0){
-    scoreTable.innerHTML='<tr><td colspan="6" style="color:var(--text-secondary)">Belum ada data</td></tr>';
-  }
 }
 
-// Reset Scoreboard
-function resetScore(){
-  const pass=prompt("🔑 Masukkan password guru:");
-  if(pass==="kimtaerae"){
-    localStorage.removeItem("posttestScores");
-    loadScoreboard();
-    alert("✅ Papan skor berhasil direset!");
-  }else if(pass){
+async function resetScore(){
+  const pass = prompt("🔑 Masukkan password guru:");
+  if(pass === "kimtaerae"){
+    localStorage.removeItem(LOCAL_KEY);
+    if(firebaseUrl){
+      try{
+        await fetch(getApiUrl(), {
+          method:'PUT',
+          headers:{'Content-Type':'application/json'},
+          body:'[]'
+        });
+      }catch(e){console.warn('Gagal reset cloud')}
+    }
+    renderScoreboard([]);
+    alert("✅ Papan skor posttest berhasil direset!");
+  } else if(pass !== null){
     alert("❌ Password salah!");
   }
 }
 
-// Load scoreboard on page load
+// =============================================
+// INIT
+// =============================================
+updateConnectionStatus(false);
 loadScoreboard();
 </script>
 
