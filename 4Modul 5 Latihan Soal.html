@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Latihan Soal Hidrolisis Garam</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  --bg-primary:#f0f9ff;
+  --bg-secondary:#ffffff;
+  --text-primary:#1e293b;
+  --text-secondary:#64748b;
+  --accent:#06b6d4;
+  --accent-hover:#0891b2;
+  --shadow:rgba(6,182,212,0.15);
+}
+
+body{
+  font-family:'Poppins',sans-serif;
+  background:var(--bg-primary);
+  color:var(--text-primary);
+  min-height:100vh;
+}
+
+/* HEADER */
+.header{
+  background:var(--bg-secondary);
+  padding:1rem 2rem;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  position:sticky;
+  top:0;
+  box-shadow:0 2px 8px var(--shadow);
+  z-index:1000;
+}
+
+.logo-section img{
+  width:50px;
+}
+
+.nav-menu{
+  display:flex;
+  gap:1rem;
+}
+
+.nav-btn{
+  background:transparent;
+  border:2px solid var(--accent);
+  padding:0.5rem 1.5rem;
+  border-radius:25px;
+  cursor:pointer;
+  font-weight:500;
+  transition:0.3s;
+}
+
+.nav-btn:hover{
+  background:var(--accent);
+  color:white;
+}
+
+/* CONTENT */
+.container{
+  max-width:1100px;
+  margin:2rem auto 3rem auto;
+  padding:1rem;
+  display:flex;
+  gap:20px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+
+.card{
+  background:var(--bg-secondary);
+  border-radius:20px;
+  padding:30px 20px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.08);
+  transition:0.3s;
+  width:45%;
+  text-align:center;
+  cursor:pointer;
+}
+
+.card:hover{
+  transform:translateY(-6px);
+}
+
+.card h1{
+  color:var(--accent);
+  font-size:1.8rem;
+  margin-bottom:0.5rem;
+}
+
+.card p{
+  line-height:1.6;
+  color:var(--text-secondary);
+}
+
+/* NAV BOTTOM */
+.nav-bottom{
+  display:flex;
+  justify-content:space-between;
+  max-width:1100px;
+  margin:2rem auto 0 auto;
+  gap:1rem;
+  flex-wrap:wrap;
+}
+
+.nav-bottom a{
+  background:var(--accent);
+  color:white;
+  text-decoration:none;
+  padding:0.8rem 1.8rem;
+  border-radius:25px;
+  font-weight:600;
+  transition:0.3s;
+  min-width:150px;
+  text-align:center;
+}
+
+.nav-bottom a:hover{
+  background:var(--accent-hover);
+  transform:translateY(-2px);
+}
+
+/* FOOTER */
+footer{
+  background:var(--bg-secondary);
+  text-align:center;
+  padding:1.5rem;
+  margin-top:3rem;
+  color:var(--text-secondary);
+  box-shadow:0 -2px 8px var(--shadow);
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="logo-section">
+    <img src="logo um rev.png" alt="Logo Universitas Negeri Malang">
+  </div>
+  <div class="nav-menu">
+    <button class="nav-btn" onclick="history.back()">← Kembali</button>
+    <button class="nav-btn" onclick="location.href='2Beranda.html'">🏠 Beranda</button>
+    <button class="nav-btn" onclick="location.href='2Profil.html'">👤 Profil</button>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="container">
+
+  <!-- Judul -->
+  <div class="card" style="width:100%;cursor:default;">
+    <h1>Latihan Soal Hidrolisis Garam</h1>
+  </div>
+
+  <!-- Pre Test -->
+  <div class="card" onclick="location.href='5Pretest.html'">
+    <h1>Pre Test</h1>
+    <p>Klik untuk mengerjakan Pre Test sebelum mempelajari modul.</p>
+  </div>
+
+  <!-- Post Test -->
+  <div class="card" onclick="location.href='5Posttest.html'">
+    <h1>Post Test</h1>
+    <p>Klik untuk mengerjakan Post Test setelah menyelesaikan modul.</p>
+  </div>
+
+</div>
+
+<!-- NAV BOTTOM -->
+<div class="nav-bottom">
+  <a href="4Modul 4 LKPD.html">⬅️ Kembali ke LKPD...</a>
+  <a href="2Beranda.html">Selesai</a>
+</div>
+
+<footer>&copy; 2026 Tsary ▏ Sumari ▏ Departemen Kimia ▏  Universitas Negeri Malang</footer>
+
+</body>
+</html>
